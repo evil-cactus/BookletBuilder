@@ -1,0 +1,62 @@
+\documentclass[a5paper,8pt,twoside]{article}
+\usepackage{geometry}
+\usepackage{csvsimple}
+\usepackage{graphicx}
+\geometry{a5paper, margin=1.5cm}
+\usepackage{xstring}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{longtable}
+
+% Create new commands for table of contents
+\newcommand*{\nsection}[2]{
+	\section*{#1}
+	\StrSubstitute{#2}{ }{_}[\Temp]
+	\label{\Temp}
+	\addcontentsline{toc}{section}{#1}
+}
+
+\newcommand*{\pagerefname}[1]{
+	 \StrSubstitute{#1}{ }{_}[\TempName]
+	 \pageref{\TempName} 
+ }
+
+% Document begins here
+\begin{document}
+	\input{booklet_title.tex}
+	\newpage
+	
+	\section*{Species organised by plant family}
+
+    \begin{longtable}{| p{.4\textwidth} | p{.18\textwidth} | p{.25\textwidth} | p{.05\textwidth} |} 
+		\hline
+		\footnotesize \bfseries Species &
+        \footnotesize \bfseries Family &
+        \footnotesize \bfseries German name &
+        \footnotesize \bfseries Page \\
+		\hline
+		\csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
+			\footnotesize{\Species} & 
+            \footnotesize{\Family} & 
+            \footnotesize{\GermanName} & \footnotesize{\pagerefname{\Species}} \\ \hline
+		}
+	\end{longtable}
+
+	\newpage
+	
+	\csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
+		\begin{minipage}[t][0.49\textheight]{\textwidth}
+			\nsection{\emph{\Species} (\Family) \footnotesize{\emph{\Author}}}{\Species} 
+			\begin{minipage}{0.5\textwidth}
+				\synonyms\\
+				\includegraphics[height=0.42\textheight]{Images/\FileNamePhoto}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.5\textwidth}
+				\comments\\
+				\includegraphics[height=0.42\textheight]{Images/\FileNameID}
+			\end{minipage}
+		\end{minipage}
+		\vspace{0.5cm}
+	}
+\end{document}

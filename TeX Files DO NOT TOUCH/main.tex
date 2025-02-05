@@ -32,13 +32,13 @@
 		\hline
 		\footnotesize \bfseries Species &
         \footnotesize \bfseries Family &
-        \footnotesize \bfseries German name &
+        \footnotesize \bfseries Local name &
         \footnotesize \bfseries Page \\
 		\hline
 		\csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
 			\footnotesize{\Species} & 
             \footnotesize{\Family} & 
-            \footnotesize{\GermanName} & \footnotesize{\pagerefname{\Species}} \\ \hline
+            \footnotesize{\LocalName} & \footnotesize{\pagerefname{\Species}} \\ \hline
 		}
 	\end{longtable}
 

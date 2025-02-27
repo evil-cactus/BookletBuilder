@@ -15,7 +15,6 @@
 \usepackage{xcolor}
 \setlength{\parindent}{0pt}
 
-
 %page numbering 
 \usepackage{fancyhdr} %page numbering 
 \pagestyle{fancy}
@@ -43,6 +42,10 @@
 \newcommand{\ifnotempty}[3]{%
     \IfSubStr{#1}{#2}{#3}{}%
 }
+
+% Create new default height and width
+\newcommand{\defaultheight}{\0.5\textheight}
+
 
 % Document begins here
 \begin{document}
@@ -96,4 +99,22 @@
     \end{adjustbox}
     \vspace{0.1cm}
 }
+
+% Iterate over special_pages.csv
+
+\csvreader[head to column names, /csv/separator=semicolon]{special_pages.csv}{}{
+    \begin{adjustbox}{minipage=[t][0.48\textheight][t]{\textwidth}}
+        \begin{minipage}{\textwidth}
+        \centering
+            \includegraphics[
+                height=\MaxHeight\defaultheight,
+                width=\MaxWidth\textwidth,
+                keepaspectratio
+            ]{Images/\FileName}
+        \end{minipage}
+         \hfill
+    \end{adjustbox}
+    \vspace{0.1cm}
+}
+
 \end{document}

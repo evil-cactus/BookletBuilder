@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2025.2.12)  27 FEB 2025 14:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2025.2.12)  27 FEB 2025 15:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -261,7 +261,7 @@ File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 LaTeX Warning: Unused global option(s):
     [8pt].
 
-No file main.aux.
+(./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
@@ -280,7 +280,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
 LaTeX Font Info:    ... okay on input line 41.
 LaTeX Font Info:    Trying to load font information for T1+bch on input line 41
 .
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1bch.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1bch.fd
 File: t1bch.fd 2004/10/18 font definitions for T1/bch.
 )
 *geometry* driver: auto-detecting
@@ -1550,9 +1550,9 @@ Underfull \vbox (badness 10000) detected at line 60
 
 [2] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 5785 strings out of 483140
- 94644 string characters out of 5965151
- 340912 words of memory out of 5000000
+ 5787 strings out of 483140
+ 94662 string characters out of 5965151
+ 340979 words of memory out of 5000000
  20700 multiletter control sequences out of 15000+600000
  560761 words of font info for 43 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191

@@ -13,12 +13,14 @@
 \usepackage{titleps}
 \usepackage{marginnote}
 \usepackage{xcolor}
+\setlength{\parindent}{0pt}
+
 
 %page numbering 
 \usepackage{fancyhdr} %page numbering 
 \pagestyle{fancy}
 \fancyhf{}
-#\fancyfoot[LE,RO]{\vspace{-0.5cm}\thepage}
+\fancyfoot[LE,RO]{\vspace{-0.5cm}\thepage}
 \renewcommand{\headrulewidth}{0pt}
 
 %\fancyhead[LE,RO]{\Location} %Add location 
@@ -36,6 +38,11 @@
 	 \StrSubstitute{#1}{ }{_}[\TempName]
 	 \pageref{\TempName} 
  }
+
+% Create new command to handle empty cells
+\newcommand{\ifnotempty}[3]{%
+    \IfSubStr{#1}{#2}{#3}{}%
+}
 
 % Document begins here
 \begin{document}
@@ -70,8 +77,8 @@
         \raisebox{\dimexpr\topskip-\height}{\marginnote{\textcolor{\LocationColour}{\textbf{\Location}}}}
          
             \vspace{-0.7cm}
-            \footnotesize{\emph{\Synonyms}}       
-            \footnotesize{\quad \Comments}\\        
+            \ifnotempty{\Synonyms}{}{\footnotesize{\emph{\Synonyms}}\\}
+            \footnotesize{\Comments}\\       
             
         \vfill
     \begin{adjustbox}{minipage=[t][\dimexpr\textheight-0.48\textheight-em][t]{\textwidth}}

@@ -14,6 +14,8 @@
 \usepackage{marginnote}
 \usepackage{xcolor}
 \setlength{\parindent}{0pt}
+\usepackage{array}
+\usepackage{ragged2e}
 
 %page numbering 
 \usepackage{fancyhdr} %page numbering 
@@ -46,6 +48,16 @@
 % Create new default height and width
 \newcommand{\defaultheight}{\0.5\textheight}
 
+% Center wide figures
+\makeatletter
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+\makeatother
+
+
 
 % Document begins here
 \begin{document}
@@ -55,24 +67,29 @@
 	\section*{Species organised by plant family}
 
 	% Table of contents
-    \begin{longtable}{| p{.4\textwidth} | p{.18\textwidth} | p{.25\textwidth} | p{.05\textwidth} |} 
-		\hline
-		\footnotesize \bfseries Species &
-        \footnotesize \bfseries Family &
-        \footnotesize \bfseries Local name &
-        \footnotesize \bfseries Page \\
-		\hline
-		\csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
-			\footnotesize{\Species} & 
-            \footnotesize{\Family} & 
-            \footnotesize{\LocalName} & \footnotesize{\pagerefname{\Species}} \\ \hline
-		}
-	\end{longtable}
+    \begin{longtable}{|>{\raggedright\arraybackslash}p{.35\textwidth}|>{\raggedright\arraybackslash}p{.18\textwidth}|>{\raggedright\arraybackslash}p{.3\textwidth}|>{\raggedright\arraybackslash}p{.05\textwidth}|}
+    \hline
+    \footnotesize \bfseries Species &
+    \footnotesize \bfseries Family &
+    \footnotesize \bfseries Local name &
+    \footnotesize \bfseries Page \\
+    \hline
+    \csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
+        \footnotesize{\Species} & 
+        \footnotesize{\Family} & 
+        \footnotesize{\LocalName} & 
+        \footnotesize{\pagerefname{\Species}} \\ 
+        \hline
+    }
+\end{longtable}
 
 	\newpage
 	
 	% Iterate over species_list.csv 
 	\csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
+
+	\IfStrEq{\FigOneWidth}{}{\renewcommand{\WidthOne}{0.5\textwidth}}{\renewcommand{\WidthOne}{\FigOneWidth\textwidth}}
+	\IfStrEq{\FigTwoWidth}{}{\renewcommand{\WidthTwo}{0.5\textwidth}}{\renewcommand{\WidthTwo}{\FigTwoWidth\textwidth}}
 	
     \begin{adjustbox}{minipage=[t][0.48\textheight][t]{\textwidth}}
     	       
@@ -85,14 +102,20 @@
             
         \vfill
     \begin{adjustbox}{minipage=[t][\dimexpr\textheight-0.48\textheight-em][t]{\textwidth}}
-    	\begin{minipage}{0.5\textwidth}
-            \includegraphics[height=\dimexpr\textheight-\ht\strutbox\relax, width=0.9\textwidth, keepaspectratio]{Images/\FileNamePhoto}
+    	\begin{minipage}{\WidthOne}
+            \includegraphics[
+            height=\dimexpr\textheight-\ht\strutbox\relax, 
+            width=0.9\textwidth, 
+            keepaspectratio]{Images/\FileNamePhoto}
             %\includegraphics[height=\fig1width\textheight]{Images/\FileNamePhoto}
         \end{minipage}
-       	 \hfill
-        \begin{minipage}{0.5\textwidth}
+       	 \hfill       	 
+        \begin{minipage}{\WidthTwo}
             %\Comments\\
-            \includegraphics[height=\dimexpr\textheight-\ht\strutbox\relax, width=0.9\textwidth, keepaspectratio]{Images/\FileNameID}
+            \includegraphics[
+            height=\dimexpr\textheight-\ht\strutbox\relax, 
+            width=0.9\textwidth, 
+            keepaspectratio]{Images/\FileNameID}
         \end{minipage}
     \end{adjustbox}
    	 \vfill
@@ -102,10 +125,11 @@
 
 % Iterate over special_pages.csv
 
+\newpage
 \csvreader[head to column names, /csv/separator=semicolon]{special_pages.csv}{}{
     \begin{adjustbox}{minipage=[t][0.48\textheight][t]{\textwidth}}
         \begin{minipage}{\textwidth}
-        \centering
+        \centerfloat
             \includegraphics[
                 height=\MaxHeight\defaultheight,
                 width=\MaxWidth\textwidth,

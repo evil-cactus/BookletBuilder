@@ -28,7 +28,9 @@
 		\vspace{0.5 cm}
 		\IfEq{\Property}{Location}{\large \textbf{\Value}}{}\\
 		\IfEq{\Property}{Version}{\large Version \Value}{}\\
-		\IfEq{\Property}{Author}{\large \Value}{}\\
+		\IfEq{\Property}{Author}{Authors: \large \Value}{}\\
+		\IfEq{\Property}{Responsible}{Responsible: \large \Value}{}\\
+		\IfEq{\Property}{Contact}{Contact: \large \Value}{}\\
 		\IfEq{\Property}{Date}{\large \Value\par\vfill}{}
 	}
 \end{titlepage}

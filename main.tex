@@ -16,6 +16,7 @@
 \setlength{\parindent}{0pt}
 \usepackage{array}
 \usepackage{ragged2e}
+\usepackage{fp}
 
 %page numbering 
 \usepackage{fancyhdr} %page numbering 
@@ -34,12 +35,18 @@
 	\addcontentsline{toc}{section}{#1}
 }
 
+\newcommand*{\hiddensection}[2]{
+	%\section*{}
+	\StrSubstitute{#2}{ }{_}[\Temp]
+	\label{\Temp}
+	\addcontentsline{toc}{section}{#1}
+}
+
 % Create new command to get page reference for each species for TOC
 \newcommand*{\pagerefname}[1]{
 	 \StrSubstitute{#1}{ }{_}[\TempName]
 	 \pageref{\TempName} 
  }
-
 % Create new command to handle empty cells
 \newcommand{\ifnotempty}[3]{%
     \IfSubStr{#1}{#2}{#3}{}%
@@ -50,14 +57,13 @@
 
 % Center wide figures
 \makeatletter
+
 \newcommand*{\centerfloat}{%
   \parindent \z@
   \leftskip \z@ \@plus 1fil \@minus \textwidth
   \rightskip\leftskip
   \parfillskip \z@skip}
 \makeatother
-
-
 
 % Document begins here
 \begin{document}
@@ -67,26 +73,56 @@
 	\section*{Species organised by plant family}
 
 	% Table of contents
-    \begin{longtable}{|>{\raggedright\arraybackslash}p{.35\textwidth}|>{\raggedright\arraybackslash}p{.18\textwidth}|>{\raggedright\arraybackslash}p{.3\textwidth}|>{\raggedright\arraybackslash}p{.05\textwidth}|}
+    \begin{longtable}{|>{\raggedright\arraybackslash}p{.35\textwidth}|>{\raggedright\arraybackslash}p{.18\textwidth}|>{\raggedright\arraybackslash}p{.3\textwidth}|>{\raggedright\arraybackslash}p{.06\textwidth}|}
     \hline
     \footnotesize \bfseries Species &
     \footnotesize \bfseries Family &
     \footnotesize \bfseries Local name &
     \footnotesize \bfseries Page \\
     \hline
-    \csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
+    \csvreader[head to column names, /csv/separator=semicolon, trim spaces=true]{species_list.csv}{}{
         \footnotesize{\Species} & 
         \footnotesize{\Family} & 
         \footnotesize{\LocalName} & 
-        \footnotesize{\pagerefname{\Species}} \\ 
+        \footnotesize{\pagerefname{\Species}} \\
         \hline
     }
 \end{longtable}
 
+
+	% TOC for special pages
+%	\newboolean{SpecialTOC}
+%	\csvreader[head to column names, /csv/separator=semicolon, trim spaces=true]{special_pages.csv}{}{
+%	\IfStrEq{\TOCTitle}{}{\setboolean{SpecialTOC}{false}}{\section*{\TOCTitle}}
+%	\setboolean{SpecialTOC}{true}
+%}		
+%     \ifstrequal{SpecialTOC}{no}{}{
+%        \begin{longtable}{|>{\raggedright\arraybackslash}p{.35\textwidth}|>{\raggedright\arraybackslash}p{.18\textwidth}|>{\raggedright\arraybackslash}p{.3\textwidth}|>{\raggedright\arraybackslash}p{.09\textwidth}|}
+%    \hline
+%    \footnotesize \bfseries Species &
+%    \footnotesize \bfseries Family &
+%    \footnotesize \bfseries Local name &
+%    \footnotesize \bfseries Page \\
+%    \hline
+%    \csvreader[head to column names, /csv/separator=semicolon, trim spaces=true]{special_pages.csv}{}{
+%        \IfStrEq{\ColD}{}{ % Skip rows where ColD is empty
+%        }{%
+%            \footnotesize{\ColD} & 
+%            \footnotesize{\ColE} & 
+%            \footnotesize{\ColF} & 
+%            \footnotesize{\pagerefname{\ColD}} \\
+%            \hline
+%        }
+%    }
+%\end{longtable}
+%
+%}
+
+
 	\newpage
 	
 	% Iterate over species_list.csv 
-	\csvreader[head to column names, /csv/separator=semicolon]{species_list.csv}{}{
+	\csvreader[head to column names, /csv/separator=semicolon, trim spaces=true]{species_list.csv}{}{
 
 	\IfStrEq{\FigOneWidth}{}{\renewcommand{\WidthOne}{0.5\textwidth}}{\renewcommand{\WidthOne}{\FigOneWidth\textwidth}}
 	\IfStrEq{\FigTwoWidth}{}{\renewcommand{\WidthTwo}{0.5\textwidth}}{\renewcommand{\WidthTwo}{\FigTwoWidth\textwidth}}
@@ -107,11 +143,9 @@
             height=\dimexpr\textheight-\ht\strutbox\relax, 
             width=0.9\textwidth, 
             keepaspectratio]{Images/\FileNamePhoto}
-            %\includegraphics[height=\fig1width\textheight]{Images/\FileNamePhoto}
         \end{minipage}
        	 \hfill       	 
         \begin{minipage}{\WidthTwo}
-            %\Comments\\
             \includegraphics[
             height=\dimexpr\textheight-\ht\strutbox\relax, 
             width=0.9\textwidth, 
@@ -125,20 +159,24 @@
 
 % Iterate over special_pages.csv
 
-\newpage
-\csvreader[head to column names, /csv/separator=semicolon]{special_pages.csv}{}{
-    \begin{adjustbox}{minipage=[t][0.48\textheight][t]{\textwidth}}
-        \begin{minipage}{\textwidth}
-        \centerfloat
-            \includegraphics[
-                height=\MaxHeight\defaultheight,
+\clearpage
+\csvreader[head to column names, /csv/separator=semicolon, trim spaces=true]{special_pages.csv}{}{
+\IfStrEq{\MaxHeight}{0.5}{\renewcommand{\SpecialHeight}{0.49\textheight}}{\renewcommand{\SpecialHeight}{\MaxHeight\textheight}}
+	\centerfloat
+    \begin{adjustbox}{minipage=[t][\SpecialHeight][t]{\MaxWidth\textwidth}}
+    \IfStrEq{\detokenize{\ColD}}{}{}{
+    }{\hiddensection{\ColD}{\ColD}}
+
+               \makebox[\textwidth][c]{\includegraphics[
+                height=\SpecialHeight,
                 width=\MaxWidth\textwidth,
                 keepaspectratio
-            ]{Images/\FileName}
-        \end{minipage}
+            ]{Images/\FileName}}
+            \vspace{0.1cm}
+        %\end{figure}
+        %\end{minipage}
          \hfill
     \end{adjustbox}
-    \vspace{0.1cm}
 }
 
 \end{document}

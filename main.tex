@@ -84,7 +84,7 @@
 }
 
 % Create new default height and width
-\newcommand{\defaultheight}{\0.5\textheight}
+\newcommand{\defaultheight}{0.5\textheight}
 
 % Center wide figures
 \makeatletter
@@ -120,10 +120,12 @@
 % Document begins here
 \begin{document}
 	\input{booklet_title.tex}
-	\thispagestyle{empty}
-	\clearpage
-	\pagenumbering{arabic}
 	
+	\thispagestyle{empty}
+	\cleardoublepage
+	
+	%\clearpage
+	\pagenumbering{arabic}	
 
 	% Table of contents
 	\section*{Species list}
@@ -161,8 +163,8 @@
         \raisebox{\dimexpr\topskip-\height}{\marginnote{\textcolor{\LocationColour}{\textbf{\Location}}}}
          
             \vspace{-0.7cm}
-            \ifnotempty{\Synonyms}{}{\footnotesize{\emph{\Synonyms}} \\ \vspace{0.1cm}}
-            \ifnotempty{\Comments}{}{\small{\Comments} \vspace{0.1cm}}  
+            \ifnotempty{\Synonyms}{}{\footnotesize{\emph{\Synonyms}} \vspace{0.2cm}}
+            \ifnotempty{\Comments}{}{\small{\Comments}}  
             
         \vfill
     \begin{adjustbox}{minipage=[t][\dimexpr\textheight-0.48\textheight-em][t]{\textwidth}}

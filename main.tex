@@ -157,14 +157,14 @@
 	\IfStrEq{\FigOneWidth}{}{\renewcommand{\WidthOne}{0.5\textwidth}}{\renewcommand{\WidthOne}{\FigOneWidth\textwidth}}
 	\IfStrEq{\FigTwoWidth}{}{\renewcommand{\WidthTwo}{0.5\textwidth}}{\renewcommand{\WidthTwo}{\FigTwoWidth\textwidth}}
 	
-    \begin{adjustbox}{minipage=[t][0.48\textheight][t]{\textwidth}}
+    \begin{adjustbox}{valign=m, minipage=[t][0.48\textheight][t]{\textwidth}}
     	       
         \raggedright\nsection{\emph{\Species} (\Family) \footnotesize{\emph{\Author}}}{\Species}
         \raisebox{\dimexpr\topskip-\height}{\marginnote{\textcolor{\LocationColour}{\textbf{\Location}}}}
          
             \vspace{-0.7cm}
             \ifnotempty{\Synonyms}{}{\footnotesize{\emph{\Synonyms}} \vspace{0.2cm}}
-            \ifnotempty{\Comments}{}{\small{\Comments}}  
+            \ifnotempty{\Comments}{}{\small{\Comments}\vspace{0.2cm}}
             
         \vfill
         \newcommand{\customheight}{\dimexpr\textheight-0.48\textheight-1em\relax}
